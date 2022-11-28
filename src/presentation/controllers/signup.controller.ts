@@ -1,4 +1,5 @@
-import { Controller } from '../protocols/controller'
+import { Controller } from '@/presentation/protocols/controller'
+import { badRequest } from '../helpers/http-helper'
 import { Validation } from '../protocols/validation'
 
 export class SignupController implements Controller {
@@ -7,7 +8,10 @@ export class SignupController implements Controller {
     ) { }
 
     handle(data: SignupController.Request): any {
-        this.validation.validate(data)
+        const error = this.validation.validate(data)
+        if (error) {
+            return badRequest(error)
+        }
         return data
     }
 }
