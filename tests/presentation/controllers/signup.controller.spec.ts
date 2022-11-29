@@ -1,13 +1,12 @@
 import { SignupController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helpers/http-helper'
-import { ValidationSpy } from '../mocks/mock.validation'
+import { ValidationSpy, SignUpSpy } from '../mocks'
 
-const mockRequest = (): any => ({
+const mockRequest = (): SignupController.Request => ({
     email: 'email',
     password: 'password',
     name: 'name',
     lastName: 'lastName',
-    birthDate: 'birthDate',
+    birthDate: new Date(),
     tellphone: 'tellphone',
     cellphone: 'cellphone',
     streetAddress: 'streetAddress',
@@ -20,13 +19,16 @@ const mockRequest = (): any => ({
 type SutTypes = {
     sut: SignupController
     validationSpy: ValidationSpy
+    signUpSpy: SignUpSpy
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
-    const sut = new SignupController(validationSpy)
+    const signUpSpy = new SignUpSpy()
+    const sut = new SignupController(validationSpy, signUpSpy)
     return {
         validationSpy,
+        signUpSpy,
         sut
     }
 }
@@ -41,7 +43,15 @@ describe('SignupController', () => {
     test('Should return 400 if Validation fails', async () => {
         const { sut, validationSpy } = makeSut()
         validationSpy.error = new Error()
-        const httpResponse = await sut.handle(mockRequest())
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(400)
+    })
+
+    test('Should call SignUp with correct values', async () => {
+        const { sut, signUpSpy } = makeSut()
+        const request = mockRequest()
+        sut.handle(request)
+        expect(signUpSpy.input).toEqual(request)
     })
 })
