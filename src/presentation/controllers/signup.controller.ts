@@ -1,10 +1,12 @@
 import { Controller } from '@/presentation/protocols/controller'
+import { SignUp } from '@/domain/usecases'
 import { badRequest } from '../helpers/http-helper'
 import { Validation } from '../protocols/validation'
 
 export class SignupController implements Controller {
     constructor(
-        private readonly validation: Validation
+        private readonly validation: Validation,
+        // private readonly signUp: SignUp
     ) { }
 
     handle(data: SignupController.Request): any {
@@ -12,6 +14,7 @@ export class SignupController implements Controller {
         if (error) {
             return badRequest(error)
         }
+        // this.signUp.handle(data)
         return data
     }
 }
