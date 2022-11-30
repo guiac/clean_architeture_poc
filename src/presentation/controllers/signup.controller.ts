@@ -1,9 +1,8 @@
 import { Controller } from '@/presentation/protocols/controller'
 import { EmailInUseError } from '@/presentation/errors'
 import { SignUp, Authentication } from '@/domain/usecases'
-import { badRequest, serverError, forbidden } from '../helpers/http-helper'
+import { badRequest, serverError, forbidden, ok } from '../helpers/http-helper'
 import { Validation } from '../protocols/validation'
-
 export class SignupController implements Controller {
     constructor(
         private readonly validation: Validation,
@@ -22,7 +21,8 @@ export class SignupController implements Controller {
                 return forbidden(new EmailInUseError())
             }
             const { email, password } = data
-            return await this.authentication.handle({ email, password })
+            const auth = await this.authentication.handle({ email, password })
+            return ok(auth)
         } catch (error) {
             return serverError(error)
         }

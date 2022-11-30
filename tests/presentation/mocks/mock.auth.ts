@@ -6,6 +6,7 @@ export class AuthSpy implements Authentication {
         email: 'email',
         name: 'name',
         lastName: 'lastName',
+        birthDate: new Date(),
         tellphone: 'tellphone',
         cellphone: 'cellphone',
         streetAddress: 'streetAddress',

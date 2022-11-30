@@ -12,6 +12,7 @@ export namespace Authentication {
         email: string
         name: string
         lastName: string
+        birthDate: Date
         tellphone: string
         cellphone: string
         streetAddress: string
