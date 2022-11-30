@@ -1,6 +1,6 @@
 import { SignupController } from '@/presentation/controllers'
 import { ValidationSpy, SignUpSpy, AuthSpy } from '../mocks'
-import { serverError } from '@/presentation/helpers/http-helper'
+import { serverError, ok } from '@/presentation/helpers/http-helper'
 
 const mockRequest = (): SignupController.Request => ({
     email: 'email',
@@ -87,5 +87,13 @@ describe('SignupController', () => {
         const request = mockRequest()
         const response = await sut.handle(request)
         expect(response).toEqual(serverError(new Error()))
+    })
+
+    test('Should return 200 if SignUp and Authentication pass', async () => {
+        const { sut } = makeSut()
+        const request = mockRequest()
+        const { password, ...rest } = request
+        const response = await sut.handle(request)
+        expect(response).toEqual(ok({ ...rest, accessToken: 'accessToken' }))
     })
 })
