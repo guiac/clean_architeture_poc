@@ -29,13 +29,17 @@ export class HasherSpy implements Hasher {
     digest = 'any_digest'
     plaintext: string
 
-    async hash (plaintext: string): Promise<string> {
-      this.plaintext = plaintext
-      return this.digest
+    async hash(plaintext: string): Promise<string> {
+        this.plaintext = plaintext
+        return this.digest
     }
-  }
+}
 
-  const mockeRequest = (): AddAccount.Request => ({
+const throwError = (): never => {
+    throw new Error()
+}
+
+const mockeRequest = (): AddAccount.Request => ({
     email: 'email',
     password: 'password',
     name: 'name',
@@ -48,15 +52,15 @@ export class HasherSpy implements Hasher {
     districtAddress: 'districtAddress',
     cityAddress: 'cityAddress',
     stateAddress: 'stateAddress'
-  })
+})
 
-  type SutTypes = {
+type SutTypes = {
     sut: DbAddAccount
     hasherSpy: HasherSpy
     addAccountRepositorySpy: AddAccountRepositorySpy
     authenticationRepository: AuthenticationRepositorySpy
     // checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
-  }
+}
 
 const makeSut = (): SutTypes => {
     const hasherSpy = new HasherSpy()
@@ -76,6 +80,12 @@ describe('DbAddAccount Usecase', () => {
         const { sut, hasherSpy } = makeSut()
         await sut.handle(mockeRequest())
         expect(hasherSpy.plaintext).toBe(mockeRequest().password)
+    })
+    test('Should throw if Hasher throws', async () => {
+        const { sut, hasherSpy } = makeSut()
+        jest.spyOn(hasherSpy, 'hash').mockImplementationOnce(throwError)
+        const promise = sut.handle(mockeRequest())
+        await expect(promise).rejects.toThrow()
     })
     // test('Should call SignUpRepository with correct values ', async () => {
     //     const {sut, signUpRepository, hasherSpy} = makeSut();
