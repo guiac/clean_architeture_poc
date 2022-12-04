@@ -54,6 +54,12 @@ describe('DbAddAccount Usecase', () => {
         await sut.handle(mockeRequest())
         expect(checkAccountByEmailRepositorySpy.params).toBe(mockeRequest().email)
     })
+    test('Should throw if CheckAccountByEmailRepository throws', async () => {
+        const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+        jest.spyOn(checkAccountByEmailRepositorySpy, 'checkAccountByEmail').mockImplementationOnce(throwError)
+        const promise = sut.handle(mockeRequest())
+        await expect(promise).rejects.toThrow()
+    })
     test('Should call Hasher with correct plaintext', async () => {
         const { sut, hasherSpy } = makeSut()
         await sut.handle(mockeRequest())
