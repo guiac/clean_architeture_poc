@@ -7,10 +7,10 @@ export class DbAddAccount implements AddAccount {
         private readonly hasher: Hasher
         // private readonly signUpRepository: AddAccountRepository,
         // private readonly authenticationRepository: AuthenticationRepository
-    ) {}
+    ) { }
 
-    async handle(data: AddAccount.Request): Promise<AddAccount.Result> {
-        await this.hasher.hash(data.password)
-        return true
+    async handle(data: AddAccount.Request): Promise<any> {
+        const hashedPassword = await this.hasher.hash(data.password)
+        return hashedPassword
     }
 }
