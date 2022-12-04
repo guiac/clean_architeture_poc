@@ -4,7 +4,7 @@
 //
 import { AddAccount } from '@/domain/usecases'
 import { DbAddAccount } from '@/data/usecases'
-import { AddAccountRepositorySpy, AuthenticationRepositorySpy, HasherSpy } from '@/tests/data/mocks'
+import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy, AuthenticationRepositorySpy, HasherSpy } from '@/tests/data/mocks'
 
 const throwError = (): never => {
     throw new Error()
@@ -30,16 +30,18 @@ type SutTypes = {
     hasherSpy: HasherSpy
     addAccountRepositorySpy: AddAccountRepositorySpy
     authenticationRepository: AuthenticationRepositorySpy
-    // checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
+    checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
     const hasherSpy = new HasherSpy()
+    const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
     const addAccountRepositorySpy = new AddAccountRepositorySpy()
     const authenticationRepository = new AuthenticationRepositorySpy()
-    const sut = new DbAddAccount(hasherSpy)
+    const sut = new DbAddAccount(hasherSpy, checkAccountByEmailRepositorySpy)
     return {
         hasherSpy,
+        checkAccountByEmailRepositorySpy,
         addAccountRepositorySpy,
         authenticationRepository,
         sut
@@ -47,6 +49,11 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAddAccount Usecase', () => {
+    test('Should call CheckAccountByEmailRepository with correct values ', async () => {
+        const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+        await sut.handle(mockeRequest())
+        expect(checkAccountByEmailRepositorySpy.params).toBe(mockeRequest().email)
+    })
     test('Should call Hasher with correct plaintext', async () => {
         const { sut, hasherSpy } = makeSut()
         await sut.handle(mockeRequest())
@@ -58,9 +65,5 @@ describe('DbAddAccount Usecase', () => {
         const promise = sut.handle(mockeRequest())
         await expect(promise).rejects.toThrow()
     })
-    // test('Should call SignUpRepository with correct values ', async () => {
-    //     const {sut, signUpRepository, hasherSpy} = makeSut();
-    //     jest.spyOn(signUpRepository, 'save')
-    //     const response = await sut.handle();
-    // })
+
 })
