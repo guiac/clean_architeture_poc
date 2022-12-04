@@ -1,8 +1,8 @@
-export interface SignUp {
-    handle: (data: SignUp.Request) => Promise<SignUp.Result>
+export interface AddAccount {
+    handle: (data: AddAccount.Request) => Promise<AddAccount.Result>
 }
 
-export namespace SignUp {
+export namespace AddAccount {
     export type Request = {
         email: string
         password: string

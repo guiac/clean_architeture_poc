@@ -1,3 +1,3 @@
 export * from './mock.validation'
-export * from './mock.signup'
+export * from './mock.add.account'
 export * from './mock.auth'

@@ -1,16 +1,16 @@
 import { Controller } from '@/presentation/protocols/controller'
 import { EmailInUseError } from '@/presentation/errors'
-import { SignUp, Authentication } from '@/domain/usecases'
+import { AddAccount, Authentication } from '@/domain/usecases'
 import { badRequest, serverError, forbidden, ok } from '../helpers/http-helper'
 import { Validation } from '../protocols/validation'
-export class SignupController implements Controller {
+export class AddAccountController implements Controller {
     constructor(
         private readonly validation: Validation,
-        private readonly signUp: SignUp,
+        private readonly signUp: AddAccount,
         private readonly authentication: Authentication
     ) { }
 
-    async handle(data: SignupController.Request): Promise<any> {
+    async handle(data: AddAccountController.Request): Promise<any> {
         try {
             const error = this.validation.validate(data)
             if (error) {
@@ -29,7 +29,7 @@ export class SignupController implements Controller {
     }
 }
 
-export namespace SignupController {
+export namespace AddAccountController {
     export interface Request {
         email: string
         password: string
