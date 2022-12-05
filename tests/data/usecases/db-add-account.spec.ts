@@ -77,4 +77,11 @@ describe('DbAddAccount Usecase', () => {
         await sut.handle(request)
         expect(addAccountRepositorySpy.params).toEqual({ ...request, password: hasherSpy.digest })
     })
+    test('Should throw if AddAccountRepository throws', async () => {
+        const { sut, addAccountRepositorySpy } = makeSut()
+        const request = mockeRequest()
+        jest.spyOn(addAccountRepositorySpy, 'save').mockImplementationOnce(throwError)
+        const promise = sut.handle(request)
+        await expect(promise).rejects.toThrow()
+    })
 })
