@@ -1,10 +1,6 @@
-
-// salvar no banco
-// verificar se o email é duplicado
-//
 import { AddAccount } from '@/domain/usecases'
 import { DbAddAccount } from '@/data/usecases'
-import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy, AuthenticationRepositorySpy, HasherSpy } from '@/tests/data/mocks'
+import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy, HasherSpy } from '@/tests/data/mocks'
 
 const throwError = (): never => {
     throw new Error()
@@ -29,7 +25,6 @@ type SutTypes = {
     sut: DbAddAccount
     hasherSpy: HasherSpy
     addAccountRepositorySpy: AddAccountRepositorySpy
-    authenticationRepository: AuthenticationRepositorySpy
     checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
 }
 
@@ -37,13 +32,11 @@ const makeSut = (): SutTypes => {
     const hasherSpy = new HasherSpy()
     const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
     const addAccountRepositorySpy = new AddAccountRepositorySpy()
-    const authenticationRepository = new AuthenticationRepositorySpy()
     const sut = new DbAddAccount(hasherSpy, checkAccountByEmailRepositorySpy, addAccountRepositorySpy)
     return {
         hasherSpy,
         checkAccountByEmailRepositorySpy,
         addAccountRepositorySpy,
-        authenticationRepository,
         sut
     }
 }
