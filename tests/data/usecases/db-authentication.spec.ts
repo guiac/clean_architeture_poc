@@ -42,23 +42,23 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAuthentication Usecase', () => {
-    test('Should call loadAccountByEmailRepositorySpy with correct value', async () => {
+    test('Should call LoadAccountByEmailRepository with correct value', async () => {
         const { sut, loadAccountByEmailRepositorySpy } = makeSut()
         await sut.handle(mockeRequest())
         expect(loadAccountByEmailRepositorySpy.params).toBe(mockeRequest().email)
     })
-    test('Should throw if LoadAccountByEmailRepositorySpy throws', async () => {
+    test('Should throw if LoadAccountByEmailRepository throws', async () => {
         const { sut, loadAccountByEmailRepositorySpy } = makeSut()
         jest.spyOn(loadAccountByEmailRepositorySpy, 'loadAccountByEmail').mockImplementationOnce(throwError)
         const promise = sut.handle(mockeRequest())
         await expect(promise).rejects.toThrow()
     })
-    test('Should call HasheComparer with correct value', async () => {
+    test('Should call HashComparer with correct value', async () => {
         const { sut, hashComparerSpy } = makeSut()
         await sut.handle(mockeRequest())
         expect(hashComparerSpy.hash).toBe(mockeRequest().password)
     })
-    test('Should throw if HaHasheComparersher throws', async () => {
+    test('Should throw if HashComparer throws', async () => {
         const { sut, hashComparerSpy } = makeSut()
         jest.spyOn(hashComparerSpy, 'compare').mockImplementationOnce(throwError)
         const promise = sut.handle(mockeRequest())
@@ -68,5 +68,11 @@ describe('DbAuthentication Usecase', () => {
         const { sut, encryptSpy, loadAccountByEmailRepositorySpy } = makeSut()
         await sut.handle(mockeRequest())
         expect(encryptSpy.param).toBe(loadAccountByEmailRepositorySpy.result.id)
+    })
+    test('Should throw if Encrypt throws', async () => {
+        const { sut, encryptSpy } = makeSut()
+        jest.spyOn(encryptSpy, 'encrypt').mockImplementationOnce(throwError)
+        const promise = sut.handle(mockeRequest())
+        await expect(promise).rejects.toThrow()
     })
 })
