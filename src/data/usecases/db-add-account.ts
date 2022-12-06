@@ -10,12 +10,12 @@ export class DbAddAccount implements AddAccount {
     ) { }
 
     async handle(data: AddAccount.Request): Promise<any> {
-        const account = await this.checkAccountByEmailRepository.checkAccountByEmail(data.email)
-        if (!account) {
+        const existsAcc = await this.checkAccountByEmailRepository.checkAccountByEmail(data.email)
+        if (!existsAcc) {
             const hashedPassword = await this.hasher.hash(data.password)
             const account = await this.addAccountRepository.save({ ...data, password: hashedPassword })
-            return account
+            return !!account
         }
-        return true
+        return existsAcc
     }
 }
