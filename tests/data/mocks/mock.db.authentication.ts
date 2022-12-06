@@ -1,5 +1,5 @@
 import { AuthenticationRepository, LoadAccountByEmailRepository } from '@/data/protocols/db'
-import { HashComparer } from '@/data/protocols/cryptography'
+import { Encrypter, HashComparer } from '@/data/protocols/cryptography'
 
 export class AuthenticationRepositorySpy implements AuthenticationRepository {
     params: any
@@ -15,6 +15,7 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
     result: any = {
         email: 'email',
         password: 'password',
+        id: 'id',
         name: 'name',
         lastName: 'lastName',
         birthDate: new Date(),
@@ -38,6 +39,15 @@ export class HashComparerSpy implements HashComparer {
     result: any = true
     async compare(hash: string): Promise<boolean> {
         this.hash = hash
+        return this.result
+    }
+}
+
+export class EncryptSpy implements Encrypter {
+    param: string
+    result: string = 'any_digest'
+    async encrypt(id: string): Promise<string> {
+        this.param = id
         return this.result
     }
 }
