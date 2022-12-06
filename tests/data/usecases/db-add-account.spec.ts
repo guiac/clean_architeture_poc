@@ -1,6 +1,6 @@
 import { AddAccount } from '@/domain/usecases'
 import { DbAddAccount } from '@/data/usecases'
-import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy, HasherSpy } from '@/tests/data/mocks'
+import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy, HasherSpy, CreateUuidSpy } from '@/tests/data/mocks'
 
 const throwError = (): never => {
     throw new Error()
@@ -9,6 +9,7 @@ const throwError = (): never => {
 const mockeRequest = (): AddAccount.Request => ({
     email: 'email',
     password: 'password',
+    identification: 'any_id',
     name: 'name',
     lastName: 'lastName',
     birthDate: new Date(),
@@ -23,17 +24,20 @@ const mockeRequest = (): AddAccount.Request => ({
 
 type SutTypes = {
     sut: DbAddAccount
+    createUuidSpy: CreateUuidSpy
     hasherSpy: HasherSpy
     addAccountRepositorySpy: AddAccountRepositorySpy
     checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
+    const createUuidSpy = new CreateUuidSpy()
     const hasherSpy = new HasherSpy()
     const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
     const addAccountRepositorySpy = new AddAccountRepositorySpy()
-    const sut = new DbAddAccount(hasherSpy, checkAccountByEmailRepositorySpy, addAccountRepositorySpy)
+    const sut = new DbAddAccount(createUuidSpy, hasherSpy, checkAccountByEmailRepositorySpy, addAccountRepositorySpy)
     return {
+        createUuidSpy,
         hasherSpy,
         checkAccountByEmailRepositorySpy,
         addAccountRepositorySpy,
@@ -75,6 +79,12 @@ describe('DbAddAccount Usecase', () => {
         const request = mockeRequest()
         jest.spyOn(addAccountRepositorySpy, 'save').mockImplementationOnce(throwError)
         const promise = sut.handle(request)
+        await expect(promise).rejects.toThrow()
+    })
+    test('Should throw if CreateUuid throws', async () => {
+        const { sut, createUuidSpy } = makeSut()
+        jest.spyOn(createUuidSpy, 'create').mockImplementationOnce(throwError)
+        const promise = sut.handle(mockeRequest())
         await expect(promise).rejects.toThrow()
     })
 })
