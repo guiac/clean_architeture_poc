@@ -1,6 +1,6 @@
 import { AddAccount } from '@/domain/usecases'
 import { DbAuthentication } from '@/data/usecases'
-import { LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'
+import { LoadAccountByEmailRepositorySpy, HashComparerSpy } from '@/tests/data/mocks'
 
 const throwError = (): never => {
     throw new Error()
@@ -24,13 +24,16 @@ const mockeRequest = (): AddAccount.Request => ({
 type SutTypes = {
     sut: DbAuthentication
     loadAccountByEmailRepositorySpy: LoadAccountByEmailRepositorySpy
+    hashComparerSpy: HashComparerSpy
 }
 
 const makeSut = (): SutTypes => {
     const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
-    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy)
+    const hashComparerSpy = new HashComparerSpy()
+    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy, hashComparerSpy)
     return {
         loadAccountByEmailRepositorySpy,
+        hashComparerSpy,
         sut
     }
 }
@@ -46,5 +49,10 @@ describe('DbAuthentication Usecase', () => {
         jest.spyOn(loadAccountByEmailRepositorySpy, 'loadAccountByEmail').mockImplementationOnce(throwError)
         const promise = sut.handle(mockeRequest())
         await expect(promise).rejects.toThrow()
+    })
+    test('Should call HasheComparer with correct value', async () => {
+        const { sut, hashComparerSpy } = makeSut()
+        await sut.handle(mockeRequest())
+        expect(hashComparerSpy.hash).toBe(mockeRequest().password)
     })
 })
