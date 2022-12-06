@@ -6,7 +6,7 @@ import { Validation } from '../protocols/validation'
 export class AddAccountController implements Controller {
     constructor(
         private readonly validation: Validation,
-        private readonly signUp: AddAccount,
+        private readonly addAccount: AddAccount,
         private readonly authentication: Authentication
     ) { }
 
@@ -16,7 +16,7 @@ export class AddAccountController implements Controller {
             if (error) {
                 return badRequest(error)
             }
-            const isValid = await this.signUp.handle(data)
+            const isValid = await this.addAccount.handle(data)
             if (!isValid) {
                 return forbidden(new EmailInUseError())
             }
