@@ -9,7 +9,7 @@ export namespace LoadAccountByEmail {
     export type Result = {
         email: string
         password: string
-        id: string
+        identification: string
         name: string
         lastName: string
         birthDate: Date

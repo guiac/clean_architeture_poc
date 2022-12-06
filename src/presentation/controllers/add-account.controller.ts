@@ -33,6 +33,7 @@ export namespace AddAccountController {
     export interface Request {
         email: string
         password: string
+        identification: string
         name: string
         lastName: string
         birthDate: Date

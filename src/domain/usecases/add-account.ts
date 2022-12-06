@@ -6,6 +6,7 @@ export namespace AddAccount {
     export type Request = {
         email: string
         password: string
+        identification: string
         name: string
         lastName: string
         birthDate: Date

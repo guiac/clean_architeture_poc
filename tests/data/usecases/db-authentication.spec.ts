@@ -10,6 +10,7 @@ const mockeRequest = (): AddAccount.Request => ({
     email: 'email',
     password: 'password',
     name: 'name',
+    identification: 'identification',
     lastName: 'lastName',
     birthDate: new Date(),
     tellphone: 'tellphone',
@@ -67,7 +68,7 @@ describe('DbAuthentication Usecase', () => {
     test('Should call Encrypt with correct value', async () => {
         const { sut, encryptSpy, loadAccountByEmailRepositorySpy } = makeSut()
         await sut.handle(mockeRequest())
-        expect(encryptSpy.param).toBe(loadAccountByEmailRepositorySpy.result.id)
+        expect(encryptSpy.param).toBe(loadAccountByEmailRepositorySpy.result.identification)
     })
     test('Should throw if Encrypt throws', async () => {
         const { sut, encryptSpy } = makeSut()

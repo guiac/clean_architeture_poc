@@ -5,6 +5,7 @@ import { serverError, ok } from '@/presentation/helpers/http-helper'
 const mockRequest = (): AddAccountController.Request => ({
     email: 'email',
     password: 'password',
+    identification: 'identification',
     name: 'name',
     lastName: 'lastName',
     birthDate: new Date(),
