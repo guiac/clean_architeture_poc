@@ -1,8 +1,8 @@
-import { AddAccountController } from '@/presentation/controllers'
+import { SignUpController } from '@/presentation/controllers'
 import { ValidationSpy, AddAccountSpy, AuthSpy } from '../mocks'
 import { serverError, ok } from '@/presentation/helpers/http-helper'
 
-const mockRequest = (): AddAccountController.Request => ({
+const mockRequest = (): SignUpController.Request => ({
     email: 'email',
     password: 'password',
     identification: 'identification',
@@ -23,7 +23,7 @@ const throwError = (): never => {
 }
 
 type SutTypes = {
-    sut: AddAccountController
+    sut: SignUpController
     validationSpy: ValidationSpy
     signUpSpy: AddAccountSpy
     authSpy: AuthSpy
@@ -33,7 +33,7 @@ const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     const signUpSpy = new AddAccountSpy()
     const authSpy = new AuthSpy()
-    const sut = new AddAccountController(validationSpy, signUpSpy, authSpy)
+    const sut = new SignUpController(validationSpy, signUpSpy, authSpy)
     return {
         validationSpy,
         signUpSpy,
@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
     }
 }
 
-describe('AddAccountController', () => {
+describe('SignUpController', () => {
     test('Should call validation with correct values', async () => {
         const { sut, validationSpy } = makeSut()
         const request = mockRequest()
