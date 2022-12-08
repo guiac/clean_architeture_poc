@@ -5,6 +5,9 @@ import { EmailValidator } from '@/validation/protocols'
 
 const email = faker.internet.email()
 
+const throwError = (): never => {
+  throw new Error()
+}
 interface SutTypes {
   emailValidatorSpy: EmailValidatorSpy
   sut: EmailValidation
@@ -44,5 +47,11 @@ describe('EmailValidation Validation', () => {
     const { sut } = makeSut()
     const error = sut.validate({ email })
     expect(error).toBeFalsy()
+  })
+
+  test('Should throw if EmailValidator throws', () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    jest.spyOn(emailValidatorSpy, 'isValid').mockImplementationOnce(throwError)
+    expect(sut.validate).toThrow()
   })
 })
