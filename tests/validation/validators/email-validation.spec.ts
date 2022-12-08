@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { EmailValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
-import { EmailValidator } from '@/validation/protocols'
+import { EmailValidatorSpy } from '@/tests/validation/mocks'
 
 const email = faker.internet.email()
 
@@ -11,14 +11,6 @@ const throwError = (): never => {
 interface SutTypes {
   emailValidatorSpy: EmailValidatorSpy
   sut: EmailValidation
-}
-class EmailValidatorSpy implements EmailValidator {
-  param: string
-  isEmailValid: boolean = true
-  isValid(email: string): boolean {
-    this.param = email
-    return this.isEmailValid
-  }
 }
 
 const makeSut = (): SutTypes => {
