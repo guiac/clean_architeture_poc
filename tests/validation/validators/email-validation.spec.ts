@@ -38,7 +38,11 @@ describe('EmailValidation Validation', () => {
   test('Should call EmailValidator with correct email', () => {
     const { sut, emailValidatorSpy } = makeSut()
     sut.validate({ email })
-    console.log('emailValidatorSpy.param', emailValidatorSpy.param)
     expect(emailValidatorSpy.param).toBe(email)
+  })
+  test('Should not return if validation succeeds', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ email })
+    expect(error).toBeFalsy()
   })
 })
