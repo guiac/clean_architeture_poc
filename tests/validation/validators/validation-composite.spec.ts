@@ -32,4 +32,9 @@ describe('Validation Composite', () => {
     const error = sut.validate({ fieldName })
     expect(error).toEqual(arrValidationsSpy[0].error)
   })
+  test('Should not return if validation succeeds', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ fieldName })
+    expect(error).toBeUndefined()
+  })
 })
