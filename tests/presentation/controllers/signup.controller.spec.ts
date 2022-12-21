@@ -5,6 +5,7 @@ import { serverError, ok } from '@/presentation/helpers/http-helper'
 const mockRequest = (): SignUpController.Request => ({
     email: 'email',
     password: 'password',
+    passwordConfirmation: 'passwordConfirmation',
     identification: 'identification',
     name: 'name',
     lastName: 'lastName',
@@ -25,18 +26,18 @@ const throwError = (): never => {
 type SutTypes = {
     sut: SignUpController
     validationSpy: ValidationSpy
-    signUpSpy: AddAccountSpy
+    addAccountSpy: AddAccountSpy
     authSpy: AuthSpy
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
-    const signUpSpy = new AddAccountSpy()
+    const addAccountSpy = new AddAccountSpy()
     const authSpy = new AuthSpy()
-    const sut = new SignUpController(validationSpy, signUpSpy, authSpy)
+    const sut = new SignUpController(validationSpy, addAccountSpy, authSpy)
     return {
         validationSpy,
-        signUpSpy,
+        addAccountSpy,
         authSpy,
         sut
     }
@@ -57,16 +58,17 @@ describe('SignUpController', () => {
         expect(httpResponse.statusCode).toBe(400)
     })
 
-    test('Should call SignUp with correct values', async () => {
-        const { sut, signUpSpy } = makeSut()
+    test('Should call AddAccount with correct values', async () => {
+        const { sut, addAccountSpy } = makeSut()
         const request = mockRequest()
+        const { passwordConfirmation, ...rest } = request
         await sut.handle(request)
-        expect(signUpSpy.input).toEqual(request)
+        expect(addAccountSpy.input).toEqual(rest)
     })
 
-    test('Should return 500 if SignUp throws', async () => {
-        const { sut, signUpSpy } = makeSut()
-        jest.spyOn(signUpSpy, 'handle').mockImplementationOnce(throwError)
+    test('Should return 500 if AddAccount throws', async () => {
+        const { sut, addAccountSpy } = makeSut()
+        jest.spyOn(addAccountSpy, 'handle').mockImplementationOnce(throwError)
         const request = mockRequest()
         const response = await sut.handle(request)
         expect(response).toEqual(serverError(new Error()))
@@ -90,10 +92,10 @@ describe('SignUpController', () => {
         expect(response).toEqual(serverError(new Error()))
     })
 
-    test('Should return 200 if SignUp and Authentication pass', async () => {
+    test('Should return 200 if AddAccount and Authentication pass', async () => {
         const { sut } = makeSut()
         const request = mockRequest()
-        const { password, ...rest } = request
+        const { password, passwordConfirmation, ...rest } = request
         const response = await sut.handle(request)
         expect(response).toEqual(ok({ ...rest, accessToken: 'accessToken' }))
     })

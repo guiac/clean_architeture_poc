@@ -9,7 +9,6 @@ const throwError = (): never => {
 const mockeRequest = (): AddAccount.Request => ({
     email: 'email',
     password: 'password',
-    passwordConfirmation: 'passwordConfirmation',
     name: 'name',
     identification: 'identification',
     lastName: 'lastName',
