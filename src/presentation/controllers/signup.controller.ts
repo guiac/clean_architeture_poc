@@ -17,7 +17,8 @@ export class SignUpController implements Controller {
             if (error) {
                 return badRequest(error)
             }
-            const isValid = await this.addAccount.handle(data)
+            const { passwordConfirmation, ...newAccount } = data
+            const isValid = await this.addAccount.handle(newAccount)
             if (!isValid) {
                 return forbidden(new EmailInUseError())
             }
@@ -34,6 +35,7 @@ export namespace SignUpController {
     export interface Request {
         email: string
         password: string
+        passwordConfirmation: string
         identification: string
         name: string
         lastName: string
