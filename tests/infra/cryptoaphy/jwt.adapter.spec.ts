@@ -40,4 +40,12 @@ describe('Jwt Adapter', () => {
             await expect(promise).rejects.toThrowError()
         })
     })
+    describe('verify()', () => {
+        test('Should call verify with correct values', async () => {
+            const sut = makeSut()
+            const signSpySpy = jest.spyOn(jwt, 'verify')
+            await sut.decrypt('any_token')
+            expect(signSpySpy).toHaveBeenCalledWith('any_token', 'any_secret')
+        })
+    })
 })
