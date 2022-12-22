@@ -1,3 +1,3 @@
 export interface CreateUuid {
-  create: () => Promise<string>
+  create: () => string
 }
