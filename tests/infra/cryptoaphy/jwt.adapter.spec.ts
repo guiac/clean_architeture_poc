@@ -47,5 +47,11 @@ describe('Jwt Adapter', () => {
             await sut.decrypt('any_token')
             expect(signSpySpy).toHaveBeenCalledWith('any_token', 'any_secret')
         })
+
+        test('Should return a token on sign success', async () => {
+            const sut = makeSut()
+            const response = await sut.decrypt('any_token')
+            expect(response).toBe('any_value')
+        })
     })
 })
