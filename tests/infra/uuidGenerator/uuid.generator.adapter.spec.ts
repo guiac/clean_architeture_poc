@@ -4,7 +4,7 @@ import { UuidGeneratorAdapter } from '@/infra/identificationGenerator'
 
 jest.mock('uuid', () => ({
     v4(): string {
-        return 'any_uuid'
+        return 'valid_uuid'
     }
 }))
 
@@ -18,5 +18,11 @@ describe('UuidGeneratorAdapter', () => {
         const uuidSpy = jest.spyOn(uuid, 'v4')
         sut.create()
         expect(uuidSpy).toHaveBeenCalled()
+    })
+
+    test('Should return valid uuid', () => {
+        const sut = makeSut()
+        const validUuid = sut.create()
+        expect(validUuid).toBe('valid_uuid')
     })
 })
