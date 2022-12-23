@@ -18,4 +18,10 @@ describe('EmailValidatorAdapter', () => {
         sut.isValid('gui.acassemiro@gmail.com')
         expect(isEmailSpy).toHaveBeenCalledWith('gui.acassemiro@gmail.com')
     })
+
+    test('Should return true if email is valid', () => {
+        const sut = makeSut()
+        const isValid = sut.isValid('gui.acassemiro@gmail.com')
+        expect(isValid).toBeTruthy()
+    })
 })
