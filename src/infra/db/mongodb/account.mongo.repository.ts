@@ -14,7 +14,7 @@ export class AccountMongoRepository implements AddAccountRepository {
         return !!result
     }
 
-    // async loadAccountByEmail(email: string): Promise<LoadAccountByEmail.Result> {
-    //     return await AccountModel.findOne({ email })
-    // }
+    async loadAccountByEmail(email: string): Promise<LoadAccountByEmail.Result> {
+        return await AccountModel.findOne({ email })
+    }
 }
