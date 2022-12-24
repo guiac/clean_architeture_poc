@@ -30,7 +30,7 @@ export class HasherSpy implements Hasher {
 export class CreateUuidSpy implements CreateUuid {
     id = 'any_id'
 
-    async create(): Promise<string> {
+    create(): string {
         return this.id
     }
 }
