@@ -1,3 +1,5 @@
-export interface Controller {
-    handle: (data: any) => any
+import { HttpResponse } from '.'
+
+export interface Controller<T = any> {
+    handle: (request: T) => Promise<HttpResponse>
 }
