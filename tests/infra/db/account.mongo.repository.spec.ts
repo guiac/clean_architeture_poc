@@ -74,10 +74,10 @@ describe('AccountMongoRepository', () => {
             expect(account).toHaveProperty('identification')
         })
 
-        // test('Should return false if email is not valid', async () => {
-        //     const sut = makeSut()
-        //     const exists = await sut.checkAccountByEmail(faker.internet.email())
-        //     expect(exists).toBe(false)
-        // })
+        test('Should return null if email is invalid', async () => {
+            const sut = makeSut()
+            const exists = await sut.loadAccountByEmail(faker.internet.email())
+            expect(exists).toBeNull()
+        })
     })
 })
