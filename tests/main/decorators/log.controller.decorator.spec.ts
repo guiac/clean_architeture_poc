@@ -62,6 +62,6 @@ describe('LogControllerDecorator', () => {
         controllerSpy.httpResponse = serverError(fakeError)
         const request = mockRequest()
         await sut.handle(request)
-        expect(logRepositorySpy.stack).toBe(controllerSpy.httpResponse.body)
+        expect(logRepositorySpy.stack).toBe(controllerSpy.httpResponse.body.stack)
     })
 })
