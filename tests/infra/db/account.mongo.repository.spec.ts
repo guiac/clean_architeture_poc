@@ -2,6 +2,8 @@ import { AccountMongoRepository, MongoHelper } from '@/infra/db/mongodb'
 import { AccountModel } from '@/infra/db/mongodb/models'
 import { AddAccountRepository } from '@/data/protocols'
 
+import { faker } from '@faker-js/faker'
+
 const makeSut = (): AccountMongoRepository => {
     return new AccountMongoRepository()
 }
@@ -56,10 +58,10 @@ describe('AccountMongoRepository', () => {
             expect(exists).toBe(true)
         })
 
-        // test('Should return false if email is not valid', async () => {
-        //   const sut = makeSut()
-        //   const exists = await sut.checkByEmail(faker.internet.email())
-        //   expect(exists).toBe(false)
-        // })
+        test('Should return false if email is not valid', async () => {
+            const sut = makeSut()
+            const exists = await sut.checkAccountByEmail(faker.internet.email())
+            expect(exists).toBe(false)
+        })
     })
 })
