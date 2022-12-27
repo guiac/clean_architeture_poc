@@ -2,6 +2,10 @@ import { UpdateAccountController } from '@/presentation/controllers'
 import { UpdateAccountSpy, ValidationSpy } from '../mocks'
 import { badRequest } from '../helpers/http.helper'
 
+const throwError = (): never => {
+    throw new Error()
+}
+
 const mockRequest = (): UpdateAccountController.Request => ({
     identification: 'identification',
     name: 'name',
@@ -52,5 +56,12 @@ describe('UpdateAccountController', () => {
         const request = mockRequest()
         await sut.handle(request)
         expect(updateAccountSpy.input).toEqual(request)
+    })
+    test('Should return 500 if UpdateAccount throws', async () => {
+        const { sut, updateAccountSpy } = makeSut()
+        const request = mockRequest()
+        jest.spyOn(updateAccountSpy, 'handle').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(request)
+        expect(httpResponse.statusCode).toBe(500)
     })
 })
