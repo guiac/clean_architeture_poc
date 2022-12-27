@@ -72,7 +72,7 @@ describe('UpdateAccountController', () => {
         expect(httpResponse.statusCode).toBe(200)
     })
 
-    test('Should return 403 if UpdateAccount return false', async () => {
+    test('Should return 400 if UpdateAccount return false', async () => {
         const { sut, updateAccountSpy } = makeSut()
         const request = mockRequest()
         jest.spyOn(updateAccountSpy, 'handle').mockReturnValueOnce(new Promise((resolve) => resolve(false)))
