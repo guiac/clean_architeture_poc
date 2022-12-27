@@ -1,10 +1,8 @@
 import { UpdateAccountController } from '@/presentation/controllers'
-import { ValidationSpy } from '../mocks'
+import { UpdateAccountSpy, ValidationSpy } from '../mocks'
 import { badRequest } from '../helpers/http.helper'
 
 const mockRequest = (): UpdateAccountController.Request => ({
-    email: 'email',
-    password: 'password',
     identification: 'identification',
     name: 'name',
     lastName: 'lastName',
@@ -19,15 +17,18 @@ const mockRequest = (): UpdateAccountController.Request => ({
 })
 
 type SutTypes = {
-    sut: UpdateAccountController
     validationSpy: ValidationSpy
+    updateAccountSpy: UpdateAccountSpy
+    sut: UpdateAccountController
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
-    const sut = new UpdateAccountController(validationSpy)
+    const updateAccountSpy = new UpdateAccountSpy()
+    const sut = new UpdateAccountController(validationSpy, updateAccountSpy)
     return {
         validationSpy,
+        updateAccountSpy,
         sut
     }
 }
@@ -45,5 +46,11 @@ describe('UpdateAccountController', () => {
         validationSpy.error = new Error()
         const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(400)
+    })
+    test('Should call UpdateAccount with correct values', async () => {
+        const { sut, updateAccountSpy } = makeSut()
+        const request = mockRequest()
+        await sut.handle(request)
+        expect(updateAccountSpy.input).toEqual(request)
     })
 })
