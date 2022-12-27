@@ -1,6 +1,6 @@
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '../protocols/validation'
-import { badRequest } from '../helpers/http.helper'
+import { badRequest, serverError } from '../helpers/http.helper'
 import { UpdateAccount } from '@/domain/usecases'
 
 export class UpdateAccountController implements Controller {
@@ -10,9 +10,13 @@ export class UpdateAccountController implements Controller {
     ) { }
 
     async handle(data: UpdateAccountController.Request): Promise<any> {
-        const error = this.validation.validate(data)
-        if (error) return badRequest(error)
-        await this.updateAccount.handle(data)
+        try {
+            const error = this.validation.validate(data)
+            if (error) return badRequest(error)
+            await this.updateAccount.handle(data)
+        } catch (error) {
+            return serverError(error)
+        }
     }
 }
 
