@@ -10,11 +10,11 @@ export class AccountMongoRepository implements AddAccountRepository {
     }
 
     async checkAccountByEmail(email: string): Promise<CheckAccountByEmailRepository.Result> {
-        const result = await AccountModel.findOne({ email })
+        const result = await AccountModel.findOne({ email }).lean()
         return !!result
     }
 
     async loadAccountByEmail(email: string): Promise<LoadAccountByEmail.Result> {
-        return await AccountModel.findOne({ email })
+        return await AccountModel.findOne({ email }).lean()
     }
 }
