@@ -1,6 +1,7 @@
 import { SignUpController } from '@/presentation/controllers'
 import { ValidationSpy, AddAccountSpy, AuthSpy } from '../mocks'
-import { serverError, ok } from '@/presentation/helpers/http.helper'
+import { serverError, ok, forbidden } from '@/presentation/helpers/http.helper'
+import { EmailInUseError } from '@/presentation/errors'
 
 const mockRequest = (): SignUpController.Request => ({
     email: 'email',
@@ -98,5 +99,13 @@ describe('SignUpController', () => {
         const { password, passwordConfirmation, ...rest } = request
         const response = await sut.handle(request)
         expect(response).toEqual(ok({ ...rest, accessToken: 'accessToken' }))
+    })
+
+    test('Should return 403 if email already is in use', async () => {
+        const { sut, addAccountSpy } = makeSut()
+        const request = mockRequest()
+        jest.spyOn(addAccountSpy, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => resolve(false)))
+        const response = await sut.handle(request)
+        expect(response).toEqual(forbidden(new EmailInUseError()))
     })
 })
