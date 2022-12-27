@@ -1,6 +1,6 @@
 import setupMiddlewares from '@/main/config/middlewares'
 import setupRoutes from '@/main/config/routes'
-import setupStaticFiles from '@/main/config/static-files'
+import setupStaticFiles from '@/main/config/static.files'
 
 import express, { Express } from 'express'
 

@@ -3,7 +3,7 @@ import { ValidationComposite, RequiredFieldValidation, CompareFieldsValidation, 
 import { Validation } from '@/presentation/protocols'
 import { EmailValidatorAdapter } from '@/infra/validators'
 
-jest.mock('@/validation/validators/validation-composite')
+jest.mock('@/validation/validators/validation.composite')
 
 describe('SignUpValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {

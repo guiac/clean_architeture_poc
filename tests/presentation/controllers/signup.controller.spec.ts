@@ -1,6 +1,6 @@
 import { SignUpController } from '@/presentation/controllers'
 import { ValidationSpy, AddAccountSpy, AuthSpy } from '../mocks'
-import { serverError, ok } from '@/presentation/helpers/http-helper'
+import { serverError, ok } from '@/presentation/helpers/http.helper'
 
 const mockRequest = (): SignUpController.Request => ({
     email: 'email',
