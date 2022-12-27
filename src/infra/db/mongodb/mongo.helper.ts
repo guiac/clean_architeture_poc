@@ -11,7 +11,7 @@ export const MongoHelper = {
   },
 
   async disconnect(): Promise<void> {
-    await this.client.close()
+    await mongoose.disconnect()
     this.client = null
   }
 }
