@@ -64,4 +64,11 @@ describe('UpdateAccountController', () => {
         const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(500)
     })
+
+    test('Should return 200 if update is successful', async () => {
+        const { sut } = makeSut()
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
+        expect(httpResponse.statusCode).toBe(200)
+    })
 })
