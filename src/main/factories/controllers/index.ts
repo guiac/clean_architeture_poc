@@ -1,1 +1,1 @@
-export * from './update.account.validation.factory'
+export * from './account'
