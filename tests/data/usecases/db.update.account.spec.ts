@@ -92,4 +92,13 @@ describe('DbUpdateAccount Usecase', () => {
             }
         )
     })
+
+    test('Should return updated account if UpdateAccountRepository returns account updated', async () => {
+        const { sut, checkAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+        const request = mockeRequest()
+        jest.spyOn(checkAccountByIdRepositorySpy, 'checkAccountById').mockReturnValueOnce(new Promise(resolve => resolve(true)))
+        jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
+        const promise = sut.handle(request)
+        await expect(promise).rejects.toThrow()
+    })
 })
