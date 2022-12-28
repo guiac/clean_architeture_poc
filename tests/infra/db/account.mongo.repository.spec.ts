@@ -100,10 +100,10 @@ describe('AccountMongoRepository', () => {
             expect(exists).toBe(true)
         })
 
-        // test('Should return false if email is not valid', async () => {
-        //     const sut = makeSut()
-        //     const exists = await sut.checkAccountByEmail(faker.internet.email())
-        //     expect(exists).toBe(false)
-        // })
+        test('Should return false if identification is not valid', async () => {
+            const sut = makeSut()
+            const exists = await sut.checkAccountById(faker.random.word())
+            expect(exists).toBe(false)
+        })
     })
 })
