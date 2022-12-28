@@ -89,11 +89,5 @@ describe('AccountMongoRepository', () => {
             const accountUpdated = await sut.update({ identification: 'identification', name: 'updatedName' })
             expect(accountUpdated.name).toBe('updatedName')
         })
-
-        // test('Should return null if email is invalid', async () => {
-        //     const sut = makeSut()
-        //     const exists = await sut.loadAccountByEmail(faker.internet.email())
-        //     expect(exists).toBeNull()
-        // })
     })
 })
