@@ -90,4 +90,20 @@ describe('AccountMongoRepository', () => {
             expect(accountUpdated.name).toBe('updatedName')
         })
     })
+
+    describe('checkAccountById()', () => {
+        test('Should return true if identification is valid', async () => {
+            const sut = makeSut()
+            const request = addAccountParams()
+            await sut.save(request)
+            const exists = await sut.checkAccountById(request.identification)
+            expect(exists).toBe(true)
+        })
+
+        // test('Should return false if email is not valid', async () => {
+        //     const sut = makeSut()
+        //     const exists = await sut.checkAccountByEmail(faker.internet.email())
+        //     expect(exists).toBe(false)
+        // })
+    })
 })
