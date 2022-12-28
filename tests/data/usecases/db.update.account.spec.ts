@@ -40,4 +40,11 @@ describe('DbUpdateAccount Usecase', () => {
         await sut.handle(mockeRequest())
         expect(checkAccountByIdRepositorySpy.params).toBe(mockeRequest().identification)
     })
+
+    test('Should throw if CheckAccountByIdRepository throwss', async () => {
+        const { sut, checkAccountByIdRepositorySpy } = makeSut()
+        jest.spyOn(checkAccountByIdRepositorySpy, 'checkAccountById').mockImplementationOnce(throwError)
+        const promise = sut.handle(mockeRequest())
+        await expect(promise).rejects.toThrow()
+    })
 })
