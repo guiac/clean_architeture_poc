@@ -7,9 +7,9 @@ export class DbUpdateAccount implements UpdateAccount {
         private readonly updateAccountRepository: UpdateAccountRepository
     ) { }
 
-    async handle(data: UpdateAccount.Request): Promise<any> {
+    async handle(data: UpdateAccount.Request): Promise<UpdateAccount.Result | boolean> {
         const exists = await this.checkAccountByIdRepository.checkAccountById(data.identification)
         if (!exists) return exists
-        await this.updateAccountRepository.update(data)
+        return await this.updateAccountRepository.update(data)
     }
 }
