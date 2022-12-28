@@ -71,4 +71,25 @@ describe('DbUpdateAccount Usecase', () => {
         await sut.handle(mockeRequest())
         expect(updateAccountRepositorySpy.params).toEqual(request)
     })
+
+    test('Should return updated account if UpdateAccountRepository returns account updated', async () => {
+        const { sut, checkAccountByIdRepositorySpy } = makeSut()
+        const request = mockeRequest()
+        jest.spyOn(checkAccountByIdRepositorySpy, 'checkAccountById').mockReturnValueOnce(new Promise(resolve => resolve(true)))
+        const updatedAccount = await sut.handle(request)
+        expect(updatedAccount).toEqual(
+            {
+                identification: 'any_id',
+                name: 'updated_name',
+                lastName: 'updated_lastName',
+                tellphone: 'updated_tellphone',
+                cellphone: 'updated_cellphone',
+                streetAddress: 'updated_streetAddress',
+                numberAddress: 'updated_numberAddress',
+                districtAddress: 'updated_districtAddress',
+                cityAddress: 'updated_cityAddress',
+                stateAddress: 'updated_stateAddress'
+            }
+        )
+    })
 })
