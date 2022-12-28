@@ -18,15 +18,15 @@ export namespace UpdateAccount {
     }
     export type Result = {
         identification: string
-        name: string
-        lastName: string
-        birthDate: Date
-        tellphone: string
-        cellphone: string
-        streetAddress: string
-        numberAddress: string
-        districtAddress: string
-        cityAddress: string
-        stateAddress: string
+        name?: string
+        lastName?: string
+        birthDate?: Date
+        tellphone?: string
+        cellphone?: string
+        streetAddress?: string
+        numberAddress?: string
+        districtAddress?: string
+        cityAddress?: string
+        stateAddress?: string
     }
 }

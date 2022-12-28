@@ -1,8 +1,8 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols'
-import { LoadAccountByEmail } from '@/domain/usecases'
+import { AddAccountRepository, CheckAccountByEmailRepository, UpdateAccountRepository } from '@/data/protocols'
+import { LoadAccountByEmail, UpdateAccount } from '@/domain/usecases'
 import { AccountModel } from './models'
 
-export class AccountMongoRepository implements AddAccountRepository {
+export class AccountMongoRepository implements AddAccountRepository, UpdateAccountRepository {
     async save(data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
         const model = new AccountModel(data)
         const result = await model.save()
@@ -16,5 +16,12 @@ export class AccountMongoRepository implements AddAccountRepository {
 
     async loadAccountByEmail(email: string): Promise<LoadAccountByEmail.Result> {
         return await AccountModel.findOne({ email }).lean()
+    }
+
+    async update(data: UpdateAccountRepository.Params): Promise<UpdateAccount.Result> {
+        const { identification, ...update } = data
+        const filter = { identification }
+        const option = { new: true }
+        return await AccountModel.findOneAndUpdate(filter, update, option)
     }
 }
