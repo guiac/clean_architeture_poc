@@ -1,5 +1,5 @@
 import { AuthenticationController } from '@/presentation/controllers'
-import { ValidationSpy } from '../mocks'
+import { ValidationSpy, AuthSpy } from '../mocks'
 
 const mockRequest = (): AuthenticationController.Request => ({
     email: 'email',
@@ -8,14 +8,17 @@ const mockRequest = (): AuthenticationController.Request => ({
 
 type SutTypes = {
     validationSpy: ValidationSpy
+    authSpy: AuthSpy
     sut: AuthenticationController
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
-    const sut = new AuthenticationController(validationSpy)
+    const authSpy = new AuthSpy()
+    const sut = new AuthenticationController(validationSpy, authSpy)
     return {
         validationSpy,
+        authSpy,
         sut
     }
 }
@@ -34,5 +37,12 @@ describe('AuthenticationController', () => {
         const request = mockRequest()
         const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(400)
+    })
+
+    test('Should call Authentication with correct values', async () => {
+        const { sut, authSpy } = makeSut()
+        const request = mockRequest()
+        await sut.handle(request)
+        expect(authSpy.input).toEqual(request)
     })
 })
