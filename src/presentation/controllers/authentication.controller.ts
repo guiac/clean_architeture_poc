@@ -1,4 +1,5 @@
 import { Controller } from '@/presentation/protocols/controller'
+import { badRequest } from '../helpers'
 import { Validation } from '../protocols/validation'
 
 export class AuthenticationController implements Controller {
@@ -7,7 +8,8 @@ export class AuthenticationController implements Controller {
     ) { }
 
     async handle(data: AuthenticationController.Request): Promise<any> {
-        this.validation.validate(data)
+        const error = this.validation.validate(data)
+        if (error) return badRequest(error)
     }
 }
 
