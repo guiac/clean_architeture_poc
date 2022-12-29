@@ -5,6 +5,8 @@ export interface UpdateAccount {
 export namespace UpdateAccount {
     export type Request = {
         identification: string
+        email?: string
+        password?: string
         name?: string
         lastName?: string
         birthDate?: Date
@@ -18,6 +20,8 @@ export namespace UpdateAccount {
     }
     export type Result = {
         identification: string
+        email?: string
+        password?: string
         name?: string
         lastName?: string
         birthDate?: Date

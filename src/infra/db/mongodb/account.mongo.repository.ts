@@ -19,7 +19,7 @@ export class AccountMongoRepository implements AddAccountRepository, UpdateAccou
     }
 
     async update(data: UpdateAccountRepository.Params): Promise<UpdateAccount.Result> {
-        const { identification, ...update } = data
+        const { identification, email, password, ...update } = data
         const filter = { identification }
         const option = { new: true }
         return await AccountModel.findOneAndUpdate(filter, update, option)
