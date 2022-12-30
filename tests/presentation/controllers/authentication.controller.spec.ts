@@ -58,10 +58,11 @@ describe('AuthenticationController', () => {
         expect(httpResponse.statusCode).toBe(500)
     })
 
-    // test('Should return 200 if Authentication succeeds', async () => {
-    //     const { sut } = makeSut()
-    //     const request = mockRequest()
-    //     const httpResponse = await sut.handle(request)
-    //     expect(httpResponse.statusCode).toBe(200)
-    // })
+    test('Should return 401 if Authentication fail', async () => {
+        const { sut, authSpy } = makeSut()
+        authSpy.result = null
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
+        expect(httpResponse.statusCode).toBe(401)
+    })
 })
