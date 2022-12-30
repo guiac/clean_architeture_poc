@@ -1,6 +1,10 @@
 import { AuthenticationController } from '@/presentation/controllers'
 import { ValidationSpy, AuthSpy } from '../mocks'
 
+const throwError = (): never => {
+    throw new Error()
+}
+
 const mockRequest = (): AuthenticationController.Request => ({
     email: 'email',
     password: 'password'
@@ -45,4 +49,19 @@ describe('AuthenticationController', () => {
         await sut.handle(request)
         expect(authSpy.input).toEqual(request)
     })
+
+    test('Should return 500 if Authentication throws', async () => {
+        const { sut, authSpy } = makeSut()
+        jest.spyOn(authSpy, 'handle').mockImplementationOnce(throwError)
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
+        expect(httpResponse.statusCode).toBe(500)
+    })
+
+    // test('Should return 200 if Authentication succeeds', async () => {
+    //     const { sut } = makeSut()
+    //     const request = mockRequest()
+    //     const httpResponse = await sut.handle(request)
+    //     expect(httpResponse.statusCode).toBe(200)
+    // })
 })
