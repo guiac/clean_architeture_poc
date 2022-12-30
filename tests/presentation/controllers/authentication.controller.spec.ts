@@ -65,4 +65,11 @@ describe('AuthenticationController', () => {
         const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(401)
     })
+
+    test('Should return 200 if Authentication succeeds', async () => {
+        const { sut } = makeSut()
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
+        expect(httpResponse.statusCode).toBe(200)
+    })
 })
