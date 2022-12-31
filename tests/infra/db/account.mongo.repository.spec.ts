@@ -1,5 +1,5 @@
 import { AccountMongoRepository, MongoHelper } from '@/infra/db/mongodb'
-import { AccountModel } from '@/infra/db/mongodb/models'
+import { MongoTestDbHelper } from './db.handler'
 import { AddAccountRepository } from '@/data/protocols'
 
 import { faker } from '@faker-js/faker'
@@ -7,8 +7,6 @@ import { faker } from '@faker-js/faker'
 const makeSut = (): AccountMongoRepository => {
     return new AccountMongoRepository()
 }
-
-const databaseName = 'test'
 
 const addAccountParams = (): AddAccountRepository.Params => ({
     email: 'any_email@gmail.com',
@@ -27,19 +25,9 @@ const addAccountParams = (): AddAccountRepository.Params => ({
 })
 
 describe('AccountMongoRepository', () => {
-    beforeAll(async () => {
-        const url = `mongodb://127.0.0.1/${databaseName}`
-        await MongoHelper.connect(url)
-    })
-
-    afterAll(async () => {
-        await AccountModel.deleteMany({})
-        await MongoHelper.disconnect()
-    })
-
-    beforeEach(async () => {
-        await AccountModel.deleteMany({})
-    })
+    beforeAll(async () => await MongoTestDbHelper.connect())
+    afterEach(async () => await MongoTestDbHelper.clearDatabase())
+    afterAll(async () => await MongoHelper.disconnect())
 
     describe('save()', () => {
         test('Should return an account on success', async () => {
