@@ -28,7 +28,9 @@ const AccountSchema = new Schema({
     numberAddress: String,
     districtAddress: String,
     cityAddress: String,
-    stateAddress: String
+    stateAddress: String,
+    accessToken: String,
+    isLogged: Boolean
 })
 
 export const AccountModel = mongoose.model('AccountModel', AccountSchema)

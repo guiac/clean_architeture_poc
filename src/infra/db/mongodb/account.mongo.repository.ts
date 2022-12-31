@@ -1,8 +1,8 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, CheckAccountByIdRepository, UpdateAccountRepository } from '@/data/protocols'
+import { AddAccountRepository, CheckAccountByEmailRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository, UpdateAccountRepository } from '@/data/protocols'
 import { LoadAccountByEmail, UpdateAccount } from '@/domain/usecases'
 import { AccountModel } from './models'
 
-export class AccountMongoRepository implements AddAccountRepository, UpdateAccountRepository, CheckAccountByIdRepository {
+export class AccountMongoRepository implements AddAccountRepository, UpdateAccountRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository {
     async save(data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
         const model = new AccountModel(data)
         const result = await model.save()
@@ -27,6 +27,15 @@ export class AccountMongoRepository implements AddAccountRepository, UpdateAccou
 
     async checkAccountById(identification: string): Promise<CheckAccountByIdRepository.Result> {
         const result = await AccountModel.findOne({ identification }).lean()
+        return !!result
+    }
+
+    async updateAccessToken(data: UpdateAccessTokenRepository.Params): Promise<UpdateAccessTokenRepository.Result> {
+        const { identification, accessToken } = data
+        const filter = { identification }
+        const update = { accessToken, isLogged: true }
+        const option = { new: true }
+        const result = await AccountModel.findOneAndUpdate(filter, update, option).lean()
         return !!result
     }
 }
