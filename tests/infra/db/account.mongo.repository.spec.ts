@@ -108,18 +108,19 @@ describe('AccountMongoRepository', () => {
     })
 
     describe('updateAccessToken()', () => {
-        test('Should return account updated on success', async () => {
+        test('Should return true on success', async () => {
             const sut = makeSut()
             const request = addAccountParams()
             await sut.save(request)
             const updateAccessToken = await sut.updateAccessToken({ identification: request.identification, accessToken: faker.random.word() })
-            expect(updateAccessToken).toBe(true)
+            expect(updateAccessToken).toBeTruthy()
         })
-
-        // test('Should return false if identification is not valid', async () => {
-        //     const sut = makeSut()
-        //     const exists = await sut.checkAccountById(faker.random.word())
-        //     expect(exists).toBe(false)
-        // })
+        test('Should return false if identification is invalid', async () => {
+            const sut = makeSut()
+            const request = addAccountParams()
+            await sut.save(request)
+            const updateAccessToken = await sut.updateAccessToken({ identification: 'invalid_identification', accessToken: faker.random.word() })
+            expect(updateAccessToken).toBeFalsy()
+        })
     })
 })

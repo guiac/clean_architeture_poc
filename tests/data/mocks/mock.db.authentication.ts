@@ -1,4 +1,4 @@
-import { AuthenticationRepository, LoadAccountByEmailRepository } from '@/data/protocols/db'
+import { AuthenticationRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/protocols/db'
 import { Encrypter, HashComparer } from '@/data/protocols/cryptography'
 
 export class AuthenticationRepositorySpy implements AuthenticationRepository {
@@ -29,6 +29,16 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
     }
 
     async loadAccountByEmail(params: any): Promise<LoadAccountByEmailRepository.Result> {
+        this.params = params
+        return this.result
+    }
+}
+
+export class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenRepository {
+    params: any
+    result: any = true
+
+    async updateAccessToken(params: any): Promise<UpdateAccessTokenRepository.Result> {
         this.params = params
         return this.result
     }
