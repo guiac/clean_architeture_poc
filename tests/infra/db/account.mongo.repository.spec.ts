@@ -33,6 +33,7 @@ describe('AccountMongoRepository', () => {
     })
 
     afterAll(async () => {
+        await AccountModel.deleteMany({})
         await MongoHelper.disconnect()
     })
 
