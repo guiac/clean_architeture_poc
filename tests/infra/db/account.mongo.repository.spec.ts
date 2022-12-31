@@ -106,4 +106,20 @@ describe('AccountMongoRepository', () => {
             expect(exists).toBe(false)
         })
     })
+
+    describe('updateAccessToken()', () => {
+        test('Should return account updated on success', async () => {
+            const sut = makeSut()
+            const request = addAccountParams()
+            await sut.save(request)
+            const updateAccessToken = await sut.updateAccessToken({ identification: request.identification, accessToken: faker.random.word() })
+            expect(updateAccessToken).toBe(true)
+        })
+
+        // test('Should return false if identification is not valid', async () => {
+        //     const sut = makeSut()
+        //     const exists = await sut.checkAccountById(faker.random.word())
+        //     expect(exists).toBe(false)
+        // })
+    })
 })
