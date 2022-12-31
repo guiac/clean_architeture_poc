@@ -30,7 +30,10 @@ const AccountSchema = new Schema({
     cityAddress: String,
     stateAddress: String,
     accessToken: String,
-    isLogged: Boolean
+    isLogged: {
+        type: Boolean,
+        default: true
+    }
 })
 
 export const AccountModel = mongoose.model('AccountModel', AccountSchema)
