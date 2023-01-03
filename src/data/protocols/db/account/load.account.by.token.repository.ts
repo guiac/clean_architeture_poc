@@ -5,5 +5,5 @@ export interface LoadAccountByTokenRepository {
 }
 
 export namespace LoadAccountByTokenRepository {
-    export type Result = LoadAccountByToken.Result
+    export type Result = LoadAccountByToken.Result | null
 }
