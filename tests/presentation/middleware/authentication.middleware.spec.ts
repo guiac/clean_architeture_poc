@@ -33,10 +33,16 @@ describe('Authentication Middleware', () => {
         expect(httpResponse.statusCode).toBe(403)
     })
 
-    test('Should return 403 if LoadAccountByTokenRepositorySpy return null', async () => {
+    test('Should return 403 if LoadAccountByTokenRepository return null', async () => {
         const { sut, loadAccountByTokenRepositorySpy } = makeSut()
         loadAccountByTokenRepositorySpy.result = null
         const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse.statusCode).toBe(403)
+    })
+
+    test('Should return 200 if LoadAccountByTokenRepository return valid account', async () => {
+        const { sut } = makeSut()
+        const httpResponse = await sut.handle(mockRequest())
+        expect(httpResponse.statusCode).toBe(200)
     })
 })
