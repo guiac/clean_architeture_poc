@@ -1,7 +1,7 @@
 import { LoadAccountByToken } from '@/domain/usecases'
 
 export interface LoadAccountByTokenRepository {
-    loadAccountByToken: (accessToken: string) => Promise<LoadAccountByToken.Result>
+    load: (accessToken: string, role?: string) => Promise<LoadAccountByToken.Result>
 }
 
 export namespace LoadAccountByTokenRepository {

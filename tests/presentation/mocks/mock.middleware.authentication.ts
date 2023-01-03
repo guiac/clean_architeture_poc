@@ -19,8 +19,8 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
         accessToken: 'accessToken'
     }
 
-    async loadAccountByToken(accessToken: string): Promise<any> {
-        this.params = accessToken
+    async load(accessToken: string, role?: string): Promise<any> {
+        this.params = { accessToken, role }
         return this.result
     }
 }
