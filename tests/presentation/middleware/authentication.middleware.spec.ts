@@ -27,6 +27,12 @@ describe('Authentication Middleware', () => {
         expect(loadAccountByTokenRepositorySpy.params.role).toBe('any_role')
     })
 
+    test('Should return 403 if no x-access-token exists in headers', async () => {
+        const { sut } = makeSut()
+        const httpResponse = await sut.handle({})
+        expect(httpResponse.statusCode).toBe(403)
+    })
+
     test('Should return 403 if LoadAccountByTokenRepositorySpy return null', async () => {
         const { sut, loadAccountByTokenRepositorySpy } = makeSut()
         loadAccountByTokenRepositorySpy.result = null
