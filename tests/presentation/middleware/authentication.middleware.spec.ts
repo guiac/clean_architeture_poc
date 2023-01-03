@@ -26,4 +26,11 @@ describe('Authentication Middleware', () => {
         expect(loadAccountByTokenRepositorySpy.params.accessToken).toBe('any_accessToken')
         expect(loadAccountByTokenRepositorySpy.params.role).toBe('any_role')
     })
+
+    test('Should return 403 if LoadAccountByTokenRepositorySpy return null', async () => {
+        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+        loadAccountByTokenRepositorySpy.result = null
+        const httpResponse = await sut.handle(mockRequest())
+        expect(httpResponse.statusCode).toBe(403)
+    })
 })
