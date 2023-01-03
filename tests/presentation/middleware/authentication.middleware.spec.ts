@@ -10,6 +10,10 @@ const mockRequest = (): AuthenticationMiddleware.Request => ({
     accessToken: 'any_accessToken'
 })
 
+const throwError = (): never => {
+    throw new Error()
+}
+
 const makeSut = (): SutTypes => {
     const loadAccountByTokenRepositorySpy = new LoadAccountByTokenRepositorySpy()
     const role = 'any_role'
@@ -44,5 +48,12 @@ describe('Authentication Middleware', () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse.statusCode).toBe(200)
+    })
+
+    test('Should return 500 if LoadAccountByTokenRepository throws', async () => {
+        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+        jest.spyOn(loadAccountByTokenRepositorySpy, 'load').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(mockRequest())
+        expect(httpResponse.statusCode).toBe(500)
     })
 })
