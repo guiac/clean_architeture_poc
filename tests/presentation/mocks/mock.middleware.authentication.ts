@@ -1,6 +1,5 @@
 
 import { LoadAccountByTokenRepository } from '@/data/protocols'
-
 export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
     params = null
     result = {
