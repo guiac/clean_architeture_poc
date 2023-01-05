@@ -24,4 +24,11 @@ describe('DbLoadAccountByToken', () => {
         await sut.handle(request)
         expect(decrypterSpy.param).toBe(request.accessToken)
     })
+    test('Should return null if Decrypter returns null', async () => {
+        const { sut, decrypterSpy } = makeSut()
+        decrypterSpy.result = null
+        const request = mockRequest()
+        const response = await sut.handle(request)
+        expect(response).toBeNull()
+    })
 })
