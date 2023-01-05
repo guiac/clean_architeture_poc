@@ -7,6 +7,10 @@ type SutTypes = {
     sut: DbLoadAccountByToken
 }
 
+const throwError = (): never => {
+    throw new Error()
+}
+
 const makeSut = (): SutTypes => {
     const decrypterSpy = new DecrypterSpy()
     const sut = new DbLoadAccountByToken(decrypterSpy)
@@ -27,6 +31,14 @@ describe('DbLoadAccountByToken', () => {
     test('Should return null if Decrypter returns null', async () => {
         const { sut, decrypterSpy } = makeSut()
         decrypterSpy.result = null
+        const request = mockRequest()
+        const response = await sut.handle(request)
+        expect(response).toBeNull()
+    })
+    test('Should return null if Decrypter throws', async () => {
+        const { sut, decrypterSpy } = makeSut()
+        decrypterSpy.result = null
+        jest.spyOn(decrypterSpy, 'decrypt').mockImplementationOnce(throwError)
         const request = mockRequest()
         const response = await sut.handle(request)
         expect(response).toBeNull()
