@@ -13,7 +13,7 @@ export class AuthenticationMiddleware implements Middleware {
         try {
             const { accessToken } = httpRequest
             if (accessToken) {
-                const account = await this.loadAccountByTokenRepository.load(accessToken, this.role)
+                const account = await this.loadAccountByTokenRepository.load({ accessToken, role: this.role })
                 if (account) return ok({ accountId: account.identification })
             }
             return forbidden(new AccessDeniedError())
