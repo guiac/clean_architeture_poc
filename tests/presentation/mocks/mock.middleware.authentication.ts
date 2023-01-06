@@ -7,7 +7,7 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
         name: 'name',
         lastName: 'lastName',
         identification: 'identification',
-        birthDate: new Date(),
+        birthDate: 'birthDate',
         tellphone: 'tellphone',
         cellphone: 'cellphone',
         streetAddress: 'streetAddress',
