@@ -61,4 +61,25 @@ describe('DbLoadAccountByToken', () => {
         const response = await sut.handle(request)
         expect(response).toBeNull()
     })
+
+    test('Should return account if LoadAccountByTokenRepository succeds', async () => {
+        const { sut } = makeSut()
+        const request = mockRequest()
+        const response = await sut.handle(request)
+        expect(response).toEqual({
+            email: 'email',
+            name: 'name',
+            lastName: 'lastName',
+            identification: 'identification',
+            birthDate: 'birthDate',
+            tellphone: 'tellphone',
+            cellphone: 'cellphone',
+            streetAddress: 'streetAddress',
+            numberAddress: 'numberAddress',
+            districtAddress: 'districtAddress',
+            cityAddress: 'cityAddress',
+            stateAddress: 'stateAddress',
+            accessToken: 'accessToken'
+        })
+    })
 })
