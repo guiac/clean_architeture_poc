@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
     }
 }
 describe('Authentication Middleware', () => {
-    test('Should call LoadAccountByTokenRepositorySpy with correct values', async () => {
+    test('Should call LoadAccountByTokenRepository with correct values', async () => {
         const { sut, loadAccountByTokenRepositorySpy } = makeSut()
         await sut.handle(mockRequest())
         expect(loadAccountByTokenRepositorySpy.params.accessToken).toBe('any_accessToken')
