@@ -18,8 +18,8 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
         accessToken: 'accessToken'
     }
 
-    async load(accessToken: string, role?: string): Promise<any> {
-        this.params = { accessToken, role }
+    async load(data: LoadAccountByTokenRepository.Params): Promise<any> {
+        this.params = data
         return this.result
     }
 }
