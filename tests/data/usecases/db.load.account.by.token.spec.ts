@@ -53,4 +53,12 @@ describe('DbLoadAccountByToken', () => {
         await sut.handle(request)
         expect(loadAccountByTokenRepositorySpy.params).toEqual(request)
     })
+
+    test('Should return null if LoadAccountByTokenRepository return null', async () => {
+        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+        loadAccountByTokenRepositorySpy.result = null
+        const request = mockRequest()
+        const response = await sut.handle(request)
+        expect(response).toBeNull()
+    })
 })
