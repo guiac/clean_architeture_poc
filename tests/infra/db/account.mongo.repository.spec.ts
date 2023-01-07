@@ -1,4 +1,4 @@
-import { AccountMongoRepository, MongoHelper } from '@/infra/db/mongodb'
+import { AccountMongoRepository } from '@/infra/db/mongodb'
 import { MongoTestDbHelper } from './db.handler'
 import { AddAccountRepository } from '@/data/protocols'
 
@@ -46,7 +46,7 @@ const addAccountParamsWithRoleAdmin = (): AddAccountRepository.Params => ({
 describe('AccountMongoRepository', () => {
     beforeAll(async () => await MongoTestDbHelper.connect())
     afterEach(async () => await MongoTestDbHelper.clearDatabase())
-    afterAll(async () => await MongoHelper.disconnect())
+    afterAll(async () => await MongoTestDbHelper.disconnect())
 
     describe('save()', () => {
         test('Should return an account on success', async () => {
