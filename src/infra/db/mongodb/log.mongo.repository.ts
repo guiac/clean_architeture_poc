@@ -6,4 +6,9 @@ export class LogMongoRepository implements LogRepository {
         const model = new LogModel({ stack })
         await model.save()
     }
+
+    async getAllLogs(): Promise<any> {
+        const logs = await LogModel.find()
+        return logs
+    }
 }
