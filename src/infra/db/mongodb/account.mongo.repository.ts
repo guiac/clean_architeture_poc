@@ -1,8 +1,7 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository, UpdateAccountRepository } from '@/data/protocols'
-import { LoadAccountByEmail, UpdateAccount } from '@/domain/usecases'
+import { AddAccountRepository, CheckAccountByEmailRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository, UpdateAccountRepository, LoadAccountByTokenRepository, LoadAccountByEmailRepository } from '@/data/protocols'
 import { AccountModel } from './models'
 
-export class AccountMongoRepository implements AddAccountRepository, UpdateAccountRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository, UpdateAccountRepository, CheckAccountByIdRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
     async save(data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
         const model = new AccountModel(data)
         const result = await model.save()
@@ -14,11 +13,11 @@ export class AccountMongoRepository implements AddAccountRepository, UpdateAccou
         return !!result
     }
 
-    async loadAccountByEmail(email: string): Promise<LoadAccountByEmail.Result> {
+    async loadAccountByEmail(email: string): Promise<LoadAccountByEmailRepository.Result> {
         return await AccountModel.findOne({ email }).lean()
     }
 
-    async update(data: UpdateAccountRepository.Params): Promise<UpdateAccount.Result> {
+    async update(data: UpdateAccountRepository.Params): Promise<UpdateAccountRepository.Result> {
         const { identification, email, password, ...update } = data
         const filter = { identification }
         const option = { new: true }
@@ -37,5 +36,14 @@ export class AccountMongoRepository implements AddAccountRepository, UpdateAccou
         const option = { new: true }
         const result = await AccountModel.findOneAndUpdate(filter, update, option).lean()
         return !!result
+    }
+
+    async load(data: LoadAccountByTokenRepository.Params): Promise<LoadAccountByTokenRepository.Result | null> {
+        const { accessToken, role } = data
+        const filter = null
+        filter.accessToken = accessToken
+        if (role) filter.role = role
+        const result = await AccountModel.findOne(filter).lean()
+        return result
     }
 }

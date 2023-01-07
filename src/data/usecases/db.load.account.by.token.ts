@@ -7,10 +7,10 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
         private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository
     ) { }
 
-    async handle(data: LoadAccountByToken.Request): Promise<any> {
+    async handle(data: LoadAccountByToken.Request): Promise<LoadAccountByToken.Result | null> {
         try {
             const token = await this.decrypter.decrypt(data.accessToken)
-            if (!token) return token
+            if (!token) return null
         } catch (error) {
             return null
         }
