@@ -21,7 +21,8 @@ const addAccountParams = (): AddAccountRepository.Params => ({
     numberAddress: 'numberAddress',
     districtAddress: 'districtAddress',
     cityAddress: 'cityAddress',
-    stateAddress: 'stateAddress'
+    stateAddress: 'stateAddress',
+    accessToken: 'accessToken'
 })
 
 describe('AccountMongoRepository', () => {
@@ -110,6 +111,16 @@ describe('AccountMongoRepository', () => {
             await sut.save(request)
             const updateAccessToken = await sut.updateAccessToken({ identification: 'invalid_identification', accessToken: faker.random.word() })
             expect(updateAccessToken).toBeFalsy()
+        })
+    })
+
+    describe('LoadAccountByTokenRepository()', () => {
+        test('Should return an account on loadByToken without role', async () => {
+            const sut = makeSut()
+            const request = addAccountParams()
+            await sut.save({ ...request })
+            const account = await sut.load({ accessToken: request.accessToken })
+            expect(account).toBeDefined()
         })
     })
 })
