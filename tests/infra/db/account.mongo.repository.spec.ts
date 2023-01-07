@@ -159,5 +159,14 @@ describe('AccountMongoRepository', () => {
             const account = await sut.load({ accessToken: request.accessToken, role: 'admin' })
             expect(account).toBeNull()
         })
+
+        test('Should return account on loadByToken with user is admin role', async () => {
+            const sut = makeSut()
+            const request = addAccountParamsWithRoleAdmin()
+            await sut.save(request)
+            const account = await sut.load({ accessToken: request.accessToken })
+            expect(account).toBeDefined()
+            expect(account.identification).toBe(request.identification)
+        })
     })
 })
