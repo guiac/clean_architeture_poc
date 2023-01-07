@@ -168,5 +168,12 @@ describe('AccountMongoRepository', () => {
             expect(account).toBeDefined()
             expect(account.identification).toBe(request.identification)
         })
+
+        test('Should return null if loadByToken fails', async () => {
+            const sut = makeSut()
+            const request = addAccountParamsWithRoleAdmin()
+            const account = await sut.load({ accessToken: request.accessToken })
+            expect(account).toBeNull()
+        })
     })
 })
