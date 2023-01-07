@@ -1,11 +1,11 @@
-import { LoadAccountByTokenRepository } from '@/data/protocols'
+import { LoadAccountByToken } from '@/domain/usecases'
 import { AccessDeniedError } from '../errors'
 import { forbidden, ok, serverError } from '../helpers'
 import { HttpResponse, Middleware } from '../protocols'
 
 export class AuthenticationMiddleware implements Middleware {
     constructor(
-        private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository,
+        private readonly loadAccountByToken: LoadAccountByToken,
         private readonly role?: string
     ) { }
 
@@ -13,7 +13,7 @@ export class AuthenticationMiddleware implements Middleware {
         try {
             const { accessToken } = httpRequest
             if (accessToken) {
-                const account = await this.loadAccountByTokenRepository.load({ accessToken, role: this.role })
+                const account = await this.loadAccountByToken.handle({ accessToken, role: this.role })
                 if (account) return ok({ accountId: account.identification })
             }
             return forbidden(new AccessDeniedError())

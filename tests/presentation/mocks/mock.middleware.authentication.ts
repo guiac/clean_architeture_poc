@@ -1,6 +1,5 @@
-
-import { LoadAccountByTokenRepository } from '@/data/protocols'
-export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
+import { LoadAccountByToken } from '@/domain/usecases'
+export class LoadAccountByTokenSpy implements LoadAccountByToken {
     params = null
     result = {
         email: 'email',
@@ -18,7 +17,7 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
         accessToken: 'accessToken'
     }
 
-    async load(data: LoadAccountByTokenRepository.Params): Promise<any> {
+    async handle(data: LoadAccountByToken.Request): Promise<any> {
         this.params = data
         return this.result
     }

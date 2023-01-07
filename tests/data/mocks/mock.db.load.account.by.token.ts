@@ -3,7 +3,21 @@ import { Decrypter } from '@/data/protocols/cryptography'
 
 export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
     params: any
-    result: any = true
+    result: any = {
+        email: 'email',
+        name: 'name',
+        lastName: 'lastName',
+        identification: 'identification',
+        birthDate: 'birthDate',
+        tellphone: 'tellphone',
+        cellphone: 'cellphone',
+        streetAddress: 'streetAddress',
+        numberAddress: 'numberAddress',
+        districtAddress: 'districtAddress',
+        cityAddress: 'cityAddress',
+        stateAddress: 'stateAddress',
+        accessToken: 'accessToken'
+    }
 
     async load(params: any): Promise<LoadAccountByTokenRepository.Result> {
         this.params = params

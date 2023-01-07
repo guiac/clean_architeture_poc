@@ -1,8 +1,8 @@
 import { AuthenticationMiddleware } from '@/presentation/middlewares'
-import { LoadAccountByTokenRepositorySpy } from '../mocks'
+import { LoadAccountByTokenSpy } from '../mocks'
 
 type SutTypes = {
-    loadAccountByTokenRepositorySpy: LoadAccountByTokenRepositorySpy
+    loadAccountByTokenSpy: LoadAccountByTokenSpy
     sut: AuthenticationMiddleware
 }
 
@@ -15,20 +15,20 @@ const throwError = (): never => {
 }
 
 const makeSut = (): SutTypes => {
-    const loadAccountByTokenRepositorySpy = new LoadAccountByTokenRepositorySpy()
+    const loadAccountByTokenSpy = new LoadAccountByTokenSpy()
     const role = 'any_role'
-    const sut = new AuthenticationMiddleware(loadAccountByTokenRepositorySpy, role)
+    const sut = new AuthenticationMiddleware(loadAccountByTokenSpy, role)
     return {
-        loadAccountByTokenRepositorySpy,
+        loadAccountByTokenSpy,
         sut
     }
 }
 describe('Authentication Middleware', () => {
     test('Should call LoadAccountByTokenRepository with correct values', async () => {
-        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+        const { sut, loadAccountByTokenSpy } = makeSut()
         await sut.handle(mockRequest())
-        expect(loadAccountByTokenRepositorySpy.params.accessToken).toBe('any_accessToken')
-        expect(loadAccountByTokenRepositorySpy.params.role).toBe('any_role')
+        expect(loadAccountByTokenSpy.params.accessToken).toBe('any_accessToken')
+        expect(loadAccountByTokenSpy.params.role).toBe('any_role')
     })
 
     test('Should return 403 if no x-access-token exists in headers', async () => {
@@ -38,8 +38,8 @@ describe('Authentication Middleware', () => {
     })
 
     test('Should return 403 if LoadAccountByTokenRepository return null', async () => {
-        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
-        loadAccountByTokenRepositorySpy.result = null
+        const { sut, loadAccountByTokenSpy } = makeSut()
+        loadAccountByTokenSpy.result = null
         const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse.statusCode).toBe(403)
     })
@@ -51,8 +51,8 @@ describe('Authentication Middleware', () => {
     })
 
     test('Should return 500 if LoadAccountByTokenRepository throws', async () => {
-        const { sut, loadAccountByTokenRepositorySpy } = makeSut()
-        jest.spyOn(loadAccountByTokenRepositorySpy, 'load').mockImplementationOnce(throwError)
+        const { sut, loadAccountByTokenSpy } = makeSut()
+        jest.spyOn(loadAccountByTokenSpy, 'handle').mockImplementationOnce(throwError)
         const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse.statusCode).toBe(500)
     })
