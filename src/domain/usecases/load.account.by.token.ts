@@ -21,5 +21,6 @@ export namespace LoadAccountByToken {
         cityAddress?: string
         stateAddress?: string
         accessToken?: string
+        role?: string
     }
 }

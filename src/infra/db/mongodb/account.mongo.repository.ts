@@ -39,11 +39,7 @@ export class AccountMongoRepository implements AddAccountRepository, UpdateAccou
     }
 
     async load(data: LoadAccountByTokenRepository.Params): Promise<LoadAccountByTokenRepository.Result | null> {
-        const { accessToken, role } = data
-        const filter = null
-        filter.accessToken = accessToken
-        if (role) filter.role = role
-        const result = await AccountModel.findOne(filter).lean()
+        const result = await AccountModel.findOne(data).lean()
         return result
     }
 }

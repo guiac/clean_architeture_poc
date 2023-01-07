@@ -17,6 +17,8 @@ export namespace AddAccount {
         districtAddress: string
         cityAddress: string
         stateAddress: string
+        accessToken?: string
+        role?: string
     }
     export type Result = boolean
 }
